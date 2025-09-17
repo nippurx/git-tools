@@ -98,6 +98,14 @@ git rollback
 
 ---
 
+## 📖 Documentación extendida
+
+Para más detalles sobre el uso de los alias:
+
+👉 [Manual completo de uso](docs/manual_git.md)
+
+---
+
 ## 📄 Licencia
 
 Este proyecto se publica bajo la licencia [MIT](LICENSE).  
