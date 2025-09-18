@@ -20,76 +20,8 @@ Incluye comandos para **backup, release y rollback**.
 
 ## ⚙️ Instalación
 
-## ⚙️ Instalación
-
-Ejecutá en **Git Bash**:
-
-```bash
-# Alias backup
-git config --global alias.backup '!sh -c "d=$(date +%Y-%m-%d-%H%M%S); git add .; git diff --cached --quiet || git commit -m \"Backup $d\"; git tag backup-$d; git push origin HEAD; git push origin backup-$d"'
-
-
-
-# Alias release
-git config --global alias.release '!f(){
-  msg=${1:-"Versión estable"};
-  base=v$(date +%Y.%m.%d);
-  tag=$base;
-  n=1;
-  git add .;
-  git commit -m "$msg" || true;
-  git push origin main;
-  while git rev-parse -q --verify "refs/tags/$tag" >/dev/null || git ls-remote --tags origin | grep -q "$tag"; do
-    tag="$base.$n"; n=$((n+1));
-  done;
-  git tag -a "$tag" -m "$msg";
-  git push origin "$tag";
-  echo "✅ Release creado: $tag";
-}; f'
-
-# Alias rollback
-git config --global alias.rollback '!f(){
-  tag=${1:-""};
-  git fetch --tags;
-  if [ -z "$tag" ]; then
-    tag=$(git for-each-ref --sort=-creatordate --format "%(refname:short)" refs/tags | grep -E "^(backup-|release-|v)" | head -n 1);
-    if [ -z "$tag" ]; then
-      echo "❌ No se encontraron ni backups ni releases.";
-      exit 1;
-    fi;
-    echo "ℹ️ No se especificó tag, usando último encontrado: $tag";
-  fi;
-  git reset --hard "$tag";
-  if git remote | grep -q origin; then
-    git push origin main --force;
-  fi;
-  echo "⏪ Rollback completado a: $tag";
-}; f'
-
-
-# Alias rollback-release
-git config --global alias.rollback-release '!f(){
-  tag=${1:-""};
-  git fetch --tags;
-  if [ -z "$tag" ]; then
-    tag=$(git for-each-ref --sort=-creatordate --format "%(refname:short)" refs/tags | grep -E "^(release-|v)" | head -n 1);
-    if [ -z "$tag" ]; then
-      echo "❌ No se encontraron releases para volver atrás.";
-      exit 1;
-    fi;
-    echo "ℹ️ No se especificó tag, usando último release: $tag";
-  fi;
-  git reset --hard "$tag";
-  if git remote | grep -q origin; then
-    git push origin main --force;
-  fi;
-  echo "⏪ Rollback a release completado: $tag";
-}; f'
-
-
-```
-
----
+Ejecutá en **Git Bash** los comandos de configuración que están en este README.
+(Ver sección de alias más arriba).
 
 ---
 
