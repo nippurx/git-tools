@@ -20,8 +20,6 @@ Incluye comandos para **backup, release y rollback**.
 
 ## ⚙️ Instalación
 
-## ⚙️ Instalación
-
 Ejecutá en **Git Bash**:
 
 ```bash
