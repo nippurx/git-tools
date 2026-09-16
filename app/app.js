@@ -1,6 +1,8 @@
 // App Logic for Git Tools PWA
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Commands generated here target POSIX shells (Git Bash / sh).
+  const shellQuote = value => "'" + value.replace(/'/g, "'\"'\"'") + "'";
 
   // 1. Tab Navigation
   const tabBtns = document.querySelectorAll('.tab-btn');
@@ -30,15 +32,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const msg = startMsg.value.trim() || 'Initial commit';
     const remote = startRemote.value.trim();
     if (remote) {
-      cmdStartPrev.textContent = `git start "${msg}" ${remote}`;
+      cmdStartPrev.textContent = `git start ${shellQuote(msg)} ${shellQuote(remote)}`;
     } else {
-      cmdStartPrev.textContent = `git start "${msg}"`;
+      cmdStartPrev.textContent = `git start ${shellQuote(msg)}`;
     }
   }
 
   if (startMsg && startRemote && cmdStartPrev) {
     startMsg.addEventListener('input', updateCmdStart);
     startRemote.addEventListener('input', updateCmdStart);
+    updateCmdStart();
   }
 
   const releaseMsg = document.getElementById('release-msg');
@@ -46,11 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateCmdRelease() {
     const msg = releaseMsg.value.trim() || 'Versión estable';
-    cmdReleasePrev.textContent = `git release "${msg}"`;
+    cmdReleasePrev.textContent = `git release ${shellQuote(msg)}`;
   }
 
   if (releaseMsg && cmdReleasePrev) {
     releaseMsg.addEventListener('input', updateCmdRelease);
+    updateCmdRelease();
   }
 
   const rollbackTag = document.getElementById('rollback-tag');
@@ -59,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateCmdRollback() {
     const tag = rollbackTag.value.trim();
     if (tag) {
-      cmdRollbackPrev.textContent = `git rollback ${tag}`;
+      cmdRollbackPrev.textContent = `git rollback ${shellQuote(tag)}`;
     } else {
       cmdRollbackPrev.textContent = `git rollback`;
     }
@@ -80,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 2000);
   }
 
-  document.body.addEventListener('click', (e) => {
+  document.body.addEventListener('click', async (e) => {
     const btn = e.target.closest('.copy-btn');
     if (!btn) return;
 
@@ -96,18 +100,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (textToCopy) {
-      navigator.clipboard.writeText(textToCopy).then(() => {
+      try {
+        await navigator.clipboard.writeText(textToCopy);
         showToast('Copiado al portapapeles 🚀');
-      }).catch(() => {
+      } catch {
         // Fallback for older browsers
         const textarea = document.createElement('textarea');
         textarea.value = textToCopy;
         document.body.appendChild(textarea);
         textarea.select();
-        document.execCommand('copy');
+        let copied = false;
+        try { copied = document.execCommand('copy'); } catch { /* Manual copy remains available. */ }
         document.body.removeChild(textarea);
-        showToast('Copiado al portapapeles 🚀');
-      });
+        showToast(copied ? 'Copiado al portapapeles 🚀' : 'No se pudo copiar. Seleccioná el comando manualmente.');
+      }
     }
   });
 

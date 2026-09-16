@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0f172a">
   <meta name="description" content="Git Tools App - Generador de comandos Git, instalador multiplataforma y guía móvil PWA.">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -63,6 +63,7 @@
 
     <!-- Tab 1: Generador Interactivo -->
     <main class="tab-content active" id="tab-generator">
+      <p class="card-desc">Comandos para Git Bash / sh. Esta guía no ejecuta Git. Rollback conserva el historial y requiere guardar los cambios pendientes primero.</p>
       <section class="card">
         <div class="card-header">
           <h2>🚀 Inicializar Proyecto (git start)</h2>
@@ -152,7 +153,7 @@
           <span class="cmd-badge release">🚀 Release</span>
           <h3>git release</h3>
         </div>
-        <p>Genera una versión estable auto-incrementada (ej. <code>v2026.07.24</code> o <code>v2026.07.24.1</code>) y la sube al repositorio remoto.</p>
+        <p>Genera un tag de versión estable auto-incrementado y lo sube junto con la rama actual si existe origin. También funciona localmente.</p>
         <div class="code-preview-box">
           <code>git release "Versión 1.0 lista"</code>
           <button class="copy-btn" data-text="git release &quot;Versión 1.0 lista&quot;">Copiar 📋</button>
@@ -188,7 +189,7 @@
     <section class="tab-content" id="tab-installer">
       <div class="card">
         <h2>⚙️ Instalación Rápida por Consola</h2>
-        <p class="card-desc">Copia el comando de instalación correspondiente a tu sistema:</p>
+        <p class="card-desc">Primero descargá el repositorio completo, incluida la carpeta lib, y abrí una terminal en esa carpeta. Elegí el comando para tu sistema:</p>
 
         <div class="install-option">
           <h4>🪟 Windows (Doble Click / CMD)</h4>
