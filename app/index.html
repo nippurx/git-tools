@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="Git Tools App - Generador de comandos Git, instalador multiplataforma y guía móvil PWA.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="GitTools">
+  <title>Git Tools – App Móvil</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- App Container -->
+  <div class="app-container">
+    
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="brand">
+        <span class="logo-icon">🚀</span>
+        <div>
+          <h1>Git Tools</h1>
+          <span class="badge">v2.0 • PWA</span>
+        </div>
+      </div>
+      <button id="pwa-install-btn" class="install-btn hidden">
+        <span>📲 Instalar App</span>
+      </button>
+    </header>
+
+    <!-- Offline Banner -->
+    <div id="offline-banner" class="offline-banner hidden">
+      ⚡ Estás navegando en modo offline
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" data-tab="generator">
+        <span class="tab-icon">⚡</span> Generador
+      </button>
+      <button class="tab-btn" data-tab="commands">
+        <span class="tab-icon">📋</span> Comandos
+      </button>
+      <button class="tab-btn" data-tab="installer">
+        <span class="tab-icon">⚙️</span> Instalación
+      </button>
+      <button class="tab-btn" data-tab="mobile">
+        <span class="tab-icon">📱</span> Celular
+      </button>
+    </nav>
+
+    <!-- Tab 1: Generador Interactivo -->
+    <main class="tab-content active" id="tab-generator">
+      <section class="card">
+        <div class="card-header">
+          <h2>🚀 Inicializar Proyecto (git start)</h2>
+        </div>
+        <div class="form-group">
+          <label for="start-msg">Mensaje de commit inicial:</label>
+          <input type="text" id="start-msg" placeholder="Ej: Inicializando estructura del proyecto" value="Initial commit">
+        </div>
+        <div class="form-group">
+          <label for="start-remote">URL remota (opcional si coincide usuario/carpeta):</label>
+          <input type="url" id="start-remote" placeholder="https://github.com/usuario/repo.git">
+        </div>
+        <div class="code-preview-box">
+          <code id="cmd-start-preview">git start "Initial commit"</code>
+          <button class="copy-btn" data-target="cmd-start-preview">Copiar 📋</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>🚀 Liberar Versión Estable (git release)</h2>
+        </div>
+        <div class="form-group">
+          <label for="release-msg">Mensaje de release:</label>
+          <input type="text" id="release-msg" placeholder="Ej: Versión estable con mejoras de UI" value="Versión estable">
+        </div>
+        <div class="code-preview-box">
+          <code id="cmd-release-preview">git release "Versión estable"</code>
+          <button class="copy-btn" data-target="cmd-release-preview">Copiar 📋</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>🛡️ Snapshot Rápido (git backup)</h2>
+        </div>
+        <p class="card-desc">Crea un punto de restauración inmediato con tag <code>backup-YYYY-MM-DD-HHMMSS</code>.</p>
+        <div class="code-preview-box">
+          <code>git backup</code>
+          <button class="copy-btn" data-text="git backup">Copiar 📋</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>⏪ Restaurar Proyecto (git rollback)</h2>
+        </div>
+        <div class="form-group">
+          <label for="rollback-tag">Tag Específico (dejar en blanco para el último):</label>
+          <input type="text" id="rollback-tag" placeholder="Ej: v2026.07.24 o backup-2026-07-24-120000">
+        </div>
+        <div class="code-preview-box">
+          <code id="cmd-rollback-preview">git rollback</code>
+          <button class="copy-btn" data-target="cmd-rollback-preview">Copiar 📋</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Tab 2: Catálogo de Comandos -->
+    <section class="tab-content" id="tab-commands">
+      <div class="card command-item">
+        <div class="cmd-title">
+          <span class="cmd-badge">🏁 Inicializar</span>
+          <h3>git start</h3>
+        </div>
+        <p>Inicializa un proyecto desde cero en la rama <code>main</code>, realiza el commit inicial y vincula al servidor remoto si se proporciona una URL.</p>
+        <div class="code-preview-box">
+          <code>git start "Estructura inicial" https://github.com/user/repo.git</code>
+          <button class="copy-btn" data-text="git start &quot;Estructura inicial&quot; https://github.com/user/repo.git">Copiar 📋</button>
+        </div>
+      </div>
+
+      <div class="card command-item">
+        <div class="cmd-title">
+          <span class="cmd-badge backup">🛡️ Snapshot</span>
+          <h3>git backup</h3>
+        </div>
+        <p>Crea un snapshot de seguridad inmediato con sello de fecha y hora. Guarda cambios pendientes y genera tag automático.</p>
+        <div class="code-preview-box">
+          <code>git backup</code>
+          <button class="copy-btn" data-text="git backup">Copiar 📋</button>
+        </div>
+      </div>
+
+      <div class="card command-item">
+        <div class="cmd-title">
+          <span class="cmd-badge release">🚀 Release</span>
+          <h3>git release</h3>
+        </div>
+        <p>Genera una versión estable auto-incrementada (ej. <code>v2026.07.24</code> o <code>v2026.07.24.1</code>) y la sube al repositorio remoto.</p>
+        <div class="code-preview-box">
+          <code>git release "Versión 1.0 lista"</code>
+          <button class="copy-btn" data-text="git release &quot;Versión 1.0 lista&quot;">Copiar 📋</button>
+        </div>
+      </div>
+
+      <div class="card command-item">
+        <div class="cmd-title">
+          <span class="cmd-badge rollback">⏪ Rollback</span>
+          <h3>git rollback</h3>
+        </div>
+        <p>Vuelve al último backup o release disponible. Si se indica un tag específico, restaura exactamente a ese punto.</p>
+        <div class="code-preview-box">
+          <code>git rollback</code>
+          <button class="copy-btn" data-text="git rollback">Copiar 📋</button>
+        </div>
+      </div>
+
+      <div class="card command-item">
+        <div class="cmd-title">
+          <span class="cmd-badge rollback">⏪ Rollback Release</span>
+          <h3>git rollback-release</h3>
+        </div>
+        <p>Vuelve exclusivamente al último release estable, ignorando los backups temporales intermedios.</p>
+        <div class="code-preview-box">
+          <code>git rollback-release</code>
+          <button class="copy-btn" data-text="git rollback-release">Copiar 📋</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 3: Instalación de Scripts -->
+    <section class="tab-content" id="tab-installer">
+      <div class="card">
+        <h2>⚙️ Instalación Rápida por Consola</h2>
+        <p class="card-desc">Copia el comando de instalación correspondiente a tu sistema:</p>
+
+        <div class="install-option">
+          <h4>🪟 Windows (Doble Click / CMD)</h4>
+          <div class="code-preview-box">
+            <code>install.bat TU_USUARIO_GITHUB</code>
+            <button class="copy-btn" data-text="install.bat TU_USUARIO_GITHUB">Copiar 📋</button>
+          </div>
+        </div>
+
+        <div class="install-option">
+          <h4>💙 Windows PowerShell</h4>
+          <div class="code-preview-box">
+            <code>.\install.ps1 -GitHubOwner TU_USUARIO_GITHUB</code>
+            <button class="copy-btn" data-text=".\install.ps1 -GitHubOwner TU_USUARIO_GITHUB">Copiar 📋</button>
+          </div>
+        </div>
+
+        <div class="install-option">
+          <h4>🐧 Git Bash / Linux / macOS / Termux</h4>
+          <div class="code-preview-box">
+            <code>sh install.sh TU_USUARIO_GITHUB</code>
+            <button class="copy-btn" data-text="sh install.sh TU_USUARIO_GITHUB">Copiar 📋</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 4: Guía Celular -->
+    <section class="tab-content" id="tab-mobile">
+      <div class="card">
+        <h2>📱 Uso en Celulares Android (Termux)</h2>
+        <ol class="step-list">
+          <li>Instalá <strong>Termux</strong> desde F-Droid.</li>
+          <li>Instalá Git en Termux:
+            <div class="code-preview-box">
+              <code>pkg install git -y</code>
+              <button class="copy-btn" data-text="pkg install git -y">Copiar 📋</button>
+            </div>
+          </li>
+          <li>Cloná el repositorio o instalá los alias ejecutando:
+            <div class="code-preview-box">
+              <code>git clone https://github.com/nippurx/git-tools.git && cd git-tools && sh install.sh</code>
+              <button class="copy-btn" data-text="git clone https://github.com/nippurx/git-tools.git && cd git-tools && sh install.sh">Copiar 📋</button>
+            </div>
+          </li>
+          <li>¡Listo! Ya podés usar <code>git start</code>, <code>git backup</code> y <code>git release</code> desde tu celular.</li>
+        </ol>
+      </div>
+
+      <div class="card">
+        <h2>📲 Cómo Instalar esta PWA en tu Celular</h2>
+        <ul class="step-list">
+          <li><strong>Android (Chrome / Edge):</strong> Toca el botón <em>"Instalar App"</em> en la parte superior o en el menú de Chrome selecciona <em>"Agregar a la pantalla de inicio"</em>.</li>
+          <li><strong>iPhone / iPad (Safari):</strong> Toca el botón <em>Compartir</em> 📤 y luego selecciona <em>"Agregar a la pantalla de inicio"</em> ➕.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">Copiado al portapapeles 🚀</div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
